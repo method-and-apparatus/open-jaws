@@ -12,6 +12,7 @@ from datetime import datetime, timedelta, timezone
 
 import tweepy
 
+from .q_branch import classify_tweet as llm_classify
 from .quartermaster import MissionConfig
 
 # ---------------------------------------------------------------
@@ -66,8 +67,17 @@ class Suspect:
 def scan_tweet(text: str) -> int | None:
     """
     Check a single tweet against all known bait patterns.
-    Returns the pattern index if matched, None if clean.
+    LLM classifier (Q Branch) gets first crack. Regex is the fallback.
+    Returns the pattern index if matched (or -1 for LLM hits), None if clean.
     """
+    # Q Branch gets first look — if available
+    llm_result = llm_classify(text)
+    if llm_result is True:
+        return -1  # LLM flagged it. No pattern index needed.
+    if llm_result is False:
+        return None  # LLM says clean. Trust Q's gadget.
+
+    # LLM unavailable — fall back to regex. The old-fashioned way.
     for i, pattern in enumerate(BAIT_PATTERNS):
         if pattern.search(text):
             return i

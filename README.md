@@ -26,9 +26,15 @@ This ends now.
 
 Open Jaws deploys two agents:
 
+### Q Branch (intelligence)
+
+The Sentinel's new toy. An LLM classifier (Claude Haiku) that reads every tweet and asks one question: *is this engagement bait?* Catches the creative ones that regex can't — the multi-action requests, the conditional follows, the "like + comment + repost and I'll DM you" mutations. Biased toward flagging. False positives are acceptable. False negatives are not.
+
+Set `ANTHROPIC_API_KEY` in `.env` to activate. Without it, the Sentinel falls back to regex. Which still works. Q is just disappointed in you.
+
 ### The Sentinel (surveillance)
 
-Monitors your timeline for the pattern. Regex-based detection with variant matching for the creative ones who think writing "Drop a fire emoji and I'll..." makes it different. It doesn't.
+Monitors your timeline for the pattern. Regex-based detection (now the fallback) with variant matching for the creative ones who think writing "Drop a fire emoji and I'll..." makes it different. It doesn't.
 
 Detection covers:
 - `Reply [X] and I'll [Y]`
@@ -67,6 +73,7 @@ Examples from the field:
 
 - Python 3.10+
 - A Twitter/X API developer account (Bearer Token + OAuth 1.0a for posting)
+- An Anthropic API key (optional — enables LLM-powered detection via Q Branch)
 - A deep, abiding hatred of engagement farming
 
 ### Installation

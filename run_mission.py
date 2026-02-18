@@ -89,7 +89,7 @@ def main() -> None:
     args = parser.parse_args()
 
     log.info("=" * 50)
-    log.info("OPEN JAWS v0.0.7 — MISSION CONTROL ONLINE")
+    log.info("OPEN JAWS v0.0.7.1 — MISSION CONTROL ONLINE")
     log.info("=" * 50)
 
     if args.daemon:
